@@ -105,18 +105,20 @@ export class App {
   }
 
   private _applyCanvasScale(canvas: HTMLCanvasElement): void {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
+    const parent = canvas.parentElement || document.body;
+    const parentW = parent.clientWidth || window.innerWidth;
+    const parentH = parent.clientHeight || window.innerHeight;
     const { width: vWidth, height: vHeight } = GAME_CONFIG.canvas;
 
-    const scale = Math.min(vw / vWidth, vh / vHeight);
+    const scale = Math.min(parentW / vWidth, parentH / vHeight);
     const cssW  = Math.floor(vWidth  * scale);
     const cssH  = Math.floor(vHeight * scale);
 
     canvas.style.width  = `${cssW}px`;
     canvas.style.height = `${cssH}px`;
-    canvas.style.left   = `${Math.floor((vw - cssW) / 2)}px`;
-    canvas.style.top    = `${Math.floor((vh - cssH) / 2)}px`;
+    canvas.style.position = 'relative';
+    canvas.style.left   = '0';
+    canvas.style.top    = '0';
   }
 
   private _onVisibilityChange = (): void => {
