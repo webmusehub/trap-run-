@@ -50,6 +50,50 @@
       </div>
     </header>
 
+    <!-- ── Game Viewport Section ─────────────────────────────────────────── -->
+    <main id="game-section">
+      <!-- Portrait orientation warning (mobile) -->
+      <div id="portrait-warning" aria-live="polite">
+        <h2>↻ ROTATE YOUR DEVICE</h2>
+        <p>TRAP RUN IS BEST PLAYED IN LANDSCAPE.</p>
+      </div>
+
+      <!-- Main game container -->
+      <div id="game-container">
+        <!-- The HTML5 Canvas — game world renders here -->
+        <canvas id="game-canvas" role="img" aria-label="Trap Run game canvas"></canvas>
+
+        <!-- Touch controls overlay -->
+        <div id="touch-controls" aria-hidden="true">
+          <div id="touch-dpad">
+            <button class="touch-btn" id="btn-left"  aria-label="Move left">◀</button>
+            <button class="touch-btn" id="btn-right" aria-label="Move right">▶</button>
+          </div>
+          <button class="touch-btn" id="btn-jump"  aria-label="Jump">▲</button>
+          <button class="touch-btn" id="btn-pause" aria-label="Pause">❚❚</button>
+        </div>
+
+        <!-- ── HTML/CSS UI panels ───────────────────────────────────────── -->
+        <div id="ui-name-prompt"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-main-menu"      class="ui-panel ui-hidden" role="main"></div>
+        <div id="ui-level-select"   class="ui-panel ui-hidden" role="main"></div>
+        <div id="ui-leaderboard"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-hud"            class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+        <div id="ui-pause"          class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-game-over"      class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-level-complete" class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-victory"        class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-settings"       class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-loading"        class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+
+        <!-- Dev overlay -->
+        <div id="dev-overlay" aria-hidden="true">
+          <div id="dev-fps">FPS: --</div>
+          <div id="dev-state">State: --</div>
+        </div>
+      </div>
+    </main>
+
     <!-- ── Public Landing Page Sections ──────────────────────────────────── -->
     <div id="landing-page">
 

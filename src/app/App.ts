@@ -28,6 +28,12 @@ export class App {
   private _audio:  AudioManager | null = null;
 
   initialize(): void {
+    const canvas = document.getElementById('game-canvas');
+    if (!canvas) {
+      console.log('[App] #game-canvas element not found on current page. Skipping canvas initialization.');
+      return;
+    }
+
     console.log('[App] Initializing Trap Run...');
     try {
       this._setupCanvas();
