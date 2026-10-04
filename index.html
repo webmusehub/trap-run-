@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="A deadly 2D browser platformer where every step could be a trap. Can you beat all 10 levels and reach the global leaderboard? RUN. JUMP. TRUST NOTHING." />
+    <meta name="keywords" content="Trap Run, 2D platformer, browser game, html5 game, speedrun, deadly traps, WebMuseHub" />
+    <meta name="author" content="WebMuseHub" />
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title"       content="Trap Run — Run. Jump. Trust Nothing." />
+    <meta property="og:description" content="A deadly 2D browser platformer where every step could be a trap. 10 Levels. 100 Coins. Global Leaderboard." />
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="Trap Run by WebMuseHub" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Trap Run — Run. Jump. Trust Nothing." />
+    <meta name="twitter:description" content="Can you beat all 10 levels and claim #1 on the global leaderboard?" />
+
+    <title>Trap Run — Run. Jump. Trust Nothing.</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+  </head>
+  <body>
+
+    <!-- ── Portrait orientation warning (mobile) ─────────────────────────── -->
+    <div id="portrait-warning" aria-live="polite">
+      <h2>↻ ROTATE YOUR DEVICE</h2>
+      <p>TRAP RUN IS BEST PLAYED IN LANDSCAPE.</p>
+    </div>
+
+    <!-- ── Main game container ───────────────────────────────────────────── -->
+    <div id="game-container">
+
+      <!-- The HTML5 Canvas — game world renders here -->
+      <canvas id="game-canvas" role="img" aria-label="Trap Run game canvas"></canvas>
+
+      <!-- Touch controls overlay -->
+      <div id="touch-controls" aria-hidden="true">
+        <div id="touch-dpad">
+          <button class="touch-btn" id="btn-left"  aria-label="Move left">◀</button>
+          <button class="touch-btn" id="btn-right" aria-label="Move right">▶</button>
+        </div>
+        <button class="touch-btn" id="btn-jump"  aria-label="Jump">▲</button>
+        <button class="touch-btn" id="btn-pause" aria-label="Pause">❚❚</button>
+      </div>
+
+      <!-- ── HTML/CSS UI panels ─────────────────────────────────────────── -->
+      <div id="ui-name-prompt"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-main-menu"      class="ui-panel ui-hidden" role="main"></div>
+      <div id="ui-level-select"   class="ui-panel ui-hidden" role="main"></div>
+      <div id="ui-leaderboard"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-hud"            class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+      <div id="ui-pause"          class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-game-over"      class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-level-complete" class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-victory"        class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-settings"       class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+      <div id="ui-loading"        class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+
+      <!-- Dev overlay -->
+      <div id="dev-overlay" aria-hidden="true">
+        <div id="dev-fps">FPS: --</div>
+        <div id="dev-state">State: --</div>
+      </div>
+
+    </div>
+
+    <!-- ── Public Landing Footer ────────────────────────────────────────── -->
+    <footer class="public-landing-footer">
+      <div class="footer-content">
+        <span class="brand">TRAP RUN &copy; WebMuseHub</span>
+        <span class="footer-links">
+          <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+          <span class="sep">•</span>
+          <a href="/terms.html" target="_blank" rel="noopener">Terms of Service</a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- ── Error screen ──────────────────────────────────────────────────── -->
+    <div id="error-screen" role="alert">
+      <h1>Something went wrong</h1>
+      <p>Trap Run encountered an error during initialization.</p>
+      <pre id="error-message"></pre>
+      <button id="reload-btn" onclick="location.reload()">Reload</button>
+    </div>
+
+    <!-- App entry point -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,792 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   menu.css — Trap Run CSS styling for all UI screens and components.
+   Visual Direction: Dark, mysterious, high-contrast, pixel-art-inspired.
+   Source of truth: TRD.md §65, ARCHITECTURE.md §59-61
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Base panel ────────────────────────────────────────────────────────────── */
+
+.ui-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 10;
+  pointer-events: auto;
+  background: rgba(13, 13, 26, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.ui-panel.ui-hidden {
+  display: none !important;
+}
+
+/* HUD does not dim screen or block pointer events */
+#ui-hud {
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+
+/* ── Generic Menu Boxes & Layout ────────────────────────────────────────────── */
+
+.menu-box {
+  background: #14142b;
+  border: 3px solid #333366;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(20, 20, 45, 0.9);
+  padding: 2.5rem 3rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90vw;
+  width: 520px;
+  text-align: center;
+}
+
+.level-select-box {
+  width: 960px;
+  max-width: 95vw;
+}
+
+/* ── Typography & Titles ────────────────────────────────────────────────────── */
+
+.game-title {
+  font-size: 3.5rem;
+  letter-spacing: 4px;
+  color: #e0e0f0;
+  text-shadow: 3px 3px 0px #000, 0 0 10px rgba(224, 224, 240, 0.3);
+  margin-bottom: 0.2rem;
+}
+
+.game-tagline {
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  color: #8888aa;
+  margin-bottom: 2rem;
+}
+
+.menu-title {
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  color: #e0e0f0;
+  text-shadow: 2px 2px 0px #000;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: #aaaaaa;
+  margin-bottom: 1.5rem;
+}
+
+.text-danger { color: #e74c3c !important; text-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
+.text-success { color: #2ecc71 !important; text-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
+.text-gold { color: #f1c40f !important; text-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
+
+/* ── Buttons ───────────────────────────────────────────────────────────────── */
+
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 1rem;
+}
+
+.menu-btn {
+  background: #222244;
+  color: #e0e0f0;
+  border: 2px solid #444477;
+  padding: 0.8rem 1.5rem;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.menu-btn:hover,
+.menu-btn:focus-visible {
+  background: #333366;
+  border-color: #6666bb;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.menu-btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.menu-btn.primary-btn {
+  background: #1b4d3e;
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.menu-btn.primary-btn:hover,
+.menu-btn.primary-btn:focus-visible {
+  background: #2ecc71;
+  color: #0d0d1a;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+}
+
+.menu-btn.secondary-btn {
+  background: #2a2a3a;
+  border-color: #555566;
+  color: #aaaabb;
+}
+
+/* ── Level Select Grid ──────────────────────────────────────────────────────── */
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin: 1rem 0 1.5rem 0;
+}
+
+.level-card {
+  background: #1c1c38;
+  border: 2px solid #3a3a66;
+  border-radius: 6px;
+  padding: 1rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.level-card.unlocked {
+  cursor: pointer;
+}
+
+.level-card.unlocked:hover,
+.level-card.unlocked:focus-visible {
+  border-color: #f1c40f;
+  background: #26264d;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(241, 196, 15, 0.2);
+  outline: none;
+}
+
+.level-card.completed {
+  border-color: #2ecc71;
+}
+
+.level-card.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: #121224;
+  border-color: #22223a;
+}
+
+.level-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.4rem;
+}
+
+.level-number {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #8888aa;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.badge-complete { background: #1b4d3e; color: #2ecc71; }
+.badge-lock { color: #e74c3c; }
+.badge-gold { background: #5c4900; color: #f1c40f; border: 1px solid #f1c40f; margin-left: 0.5rem; }
+
+.level-name {
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.level-stats {
+  font-size: 0.75rem;
+  width: 100%;
+  border-top: 1px solid #2a2a50;
+  padding-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat-label { color: #777799; }
+.stat-val { color: #e0e0f0; font-weight: bold; }
+
+/* ── HUD ───────────────────────────────────────────────────────────────────── */
+
+.hud-container {
+  position: absolute;
+  inset: 0;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 1.1rem;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.hud-group {
+  display: flex;
+  gap: 1.5rem;
+  background: rgba(13, 13, 26, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  backdrop-filter: blur(2px);
+}
+
+.hud-center {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.hud-level-title {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #8888bb;
+}
+
+.hud-timer {
+  font-size: 1.3rem;
+  color: #f1c40f;
+}
+
+.hud-hearts {
+  color: #e74c3c;
+  letter-spacing: 2px;
+  font-size: 1.3rem;
+}
+
+.hud-val {
+  color: #ffffff;
+}
+
+.checkpoint-toast {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(46, 204, 113, 0.9);
+  color: #0d0d1a;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.checkpoint-toast.toast-active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Victory Congrats Banner ────────────────────────────────────────────────── */
+
+.victory-congrats-banner {
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #f1c40f;
+  text-shadow: 0 0 15px rgba(241, 196, 15, 0.7), 2px 2px 0px #000;
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
+  animation: victoryPulse 1.5s infinite alternate ease-in-out;
+}
+
+.victory-congrats-sub {
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #2ecc71;
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5), 1px 1px 0px #000;
+  margin-bottom: 1.2rem;
+}
+
+@keyframes victoryPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.04); }
+}
+
+/* ── Results Summary (Level Complete & Game Over) ──────────────────────────── */
+
+.results-summary {
+  background: #101020;
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem;
+}
+
+.result-label { color: #8888aa; }
+.result-val { color: #ffffff; font-weight: bold; display: flex; align-items: center; }
+
+/* ── Settings Screen ───────────────────────────────────────────────────────── */
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a36;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #2e2e54;
+}
+
+.setting-label {
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #dddde8;
+}
+
+.setting-toggle {
+  background: #333355;
+  color: #8888aa;
+  border: 1px solid #555577;
+  padding: 0.4rem 1.2rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 70px;
+  transition: all 0.15s ease;
+}
+
+.setting-toggle.active {
+  background: #1b4d3e;
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+/* ── Modal Dialogs (How To Play, etc.) ─────────────────────────────────────── */
+
+.modal-dialog {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: #181830;
+  border: 2px solid #444477;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.9);
+}
+
+.controls-list {
+  list-style: none;
+  text-align: left;
+  margin: 1.2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.controls-list .key {
+  background: #2a2a4d;
+  border: 1px solid #555588;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+  color: #f1c40f;
+}
+
+.tip-text {
+  font-size: 0.85rem;
+  color: #e74c3c;
+  margin-bottom: 1.2rem;
+}
+
+/* ── Player Profile Badge in Main Menu ────────────────────────────────────── */
+
+.player-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1e1e3b;
+  border: 1px solid #444477;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.player-profile-badge:hover {
+  background: #2b2b52;
+  border-color: #f1c40f;
+  transform: scale(1.03);
+}
+
+.player-name-text {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffd700;
+  letter-spacing: 1px;
+}
+
+/* ── Name Prompt Modal ─────────────────────────────────────────────────────── */
+
+.name-prompt-box {
+  width: 460px;
+  max-width: 90vw;
+}
+
+.name-prompt-form {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.name-prompt-title {
+  font-size: 1.6rem;
+  color: #ff3366;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.3rem;
+}
+
+.name-prompt-sub {
+  font-size: 0.85rem;
+  color: #8888aa;
+  margin-bottom: 1.2rem;
+}
+
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.name-input {
+  width: 100%;
+  max-width: 320px;
+  background: #0d0d1a;
+  border: 2px solid #333366;
+  color: #ffffff;
+  padding: 0.8rem 1rem;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.name-input:focus {
+  border-color: #2ecc71;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+}
+
+.name-input.input-invalid {
+  border-color: #e74c3c;
+}
+
+.input-error-msg {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  display: none;
+  font-weight: bold;
+}
+
+/* ── Leaderboard Screen ────────────────────────────────────────────────────── */
+
+.leaderboard-box {
+  width: 860px;
+  max-width: 95vw;
+}
+
+.leaderboard-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.tab-btn {
+  background: #1c1c38;
+  border: 1px solid #3a3a66;
+  color: #8888aa;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+  background: #2ecc71;
+  color: #0d0d1a;
+  border-color: #2ecc71;
+  box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+}
+
+.leaderboard-content {
+  width: 100%;
+  min-height: 240px;
+  max-height: 380px;
+  overflow-y: auto;
+  margin: 0.5rem 0 1rem 0;
+  background: #0d0d1a;
+  border: 1px solid #222244;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.your-rank-card {
+  background: #1b263b;
+  border: 1px solid #00e5ff;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.your-rank-title {
+  font-weight: bold;
+  color: #00e5ff;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.your-rank-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+}
+
+.rank-badge {
+  background: #00e5ff;
+  color: #0d0d1a;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.leaderboard-table th {
+  background: #16162e;
+  color: #8888bb;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #2a2a50;
+}
+
+.leaderboard-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid #1a1a36;
+}
+
+.leaderboard-table tr.highlight-player {
+  background: rgba(0, 229, 255, 0.15);
+  font-weight: bold;
+}
+
+.leaderboard-table tr.highlight-player td {
+  color: #00e5ff;
+}
+
+.you-tag {
+  font-size: 0.75rem;
+  color: #00e5ff;
+}
+
+.leaderboard-spinner, .leaderboard-empty {
+  padding: 3rem 1rem;
+  color: #8888aa;
+  font-style: italic;
+}
+
+.leaderboard-error-box {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.share-btn {
+  background: #0d47a1;
+  border-color: #00e5ff;
+  color: #00e5ff;
+}
+
+.share-btn:hover {
+  background: #00e5ff;
+  color: #0d0d1a;
+}
+
+.sm-btn {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.setting-name-group {
+  display: flex;
+  align-items: center;
+}
+
+/* ── Public Landing Footer ──────────────────────────────────────────────────── */
+
+.public-landing-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.4rem 1rem;
+  background: rgba(10, 10, 20, 0.9);
+  border-top: 1px solid #1a1a36;
+  z-index: 5;
+  font-size: 0.8rem;
+  color: #666688;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links a {
+  color: #8888aa;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #00e5ff;
+  text-decoration: underline;
+}
+
+.footer-links .sep {
+  margin: 0 0.4rem;
+}
+
+/* ── Ad Container Placeholders ─────────────────────────────────────────────── */
+
+.ad-placement {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ad-ready-placeholder {
+  display: none; /* Hidden until live provider script is loaded */
+}
+
+/* ── Responsiveness for 1280x720, 1920x1080, 1366x768 ──────────────────────── */
+
+@media (max-width: 900px) {
+  .level-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .level-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .game-title {
+    font-size: 2.5rem;
+  }
+  .leaderboard-box {
+    padding: 1.5rem 1rem;
+  }
+  .tab-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+

@@ -1,0 +1,165 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   mobile.css — Responsive layout, touch controls, and landscape handling.
+   Source of truth: ARCHITECTURE.md §19-22, TRD.md §63-64, PRD Phase 8 §3-9, §22-24
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Prevent scroll bounce on iOS */
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+/* ── Portrait Warning Overlay ────────────────────────────────────────────── */
+
+#portrait-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #090914;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 9999;
+  padding: 2rem;
+  gap: 1.2rem;
+}
+
+#portrait-warning h2 {
+  font-size: 1.8rem;
+  color: #e8c84a;
+  letter-spacing: 2px;
+  font-family: inherit;
+}
+
+#portrait-warning p {
+  color: #aaaacc;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+/* Show rotate warning on narrow portrait viewports */
+@media (orientation: portrait) and (max-width: 900px) {
+  #portrait-warning {
+    display: flex;
+  }
+
+  #game-container {
+    display: none !important;
+  }
+}
+
+/* ── Touch Controls Overlay ────────────────────────────────────────────────
+   Positioned fixed over the canvas; visible on touch devices or fine pointer fallback. */
+
+#touch-controls {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Display touch controls when coarse pointer is detected or class .has-touch added */
+@media (pointer: coarse), (max-width: 1024px) {
+  #touch-controls {
+    display: block;
+  }
+}
+
+.touch-btn {
+  position: absolute;
+  min-width:  64px;
+  min-height: 64px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, 0.9);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  transition: background 0.1s ease, transform 0.1s ease;
+}
+
+.touch-btn:active,
+.touch-btn.active {
+  background: rgba(232, 200, 74, 0.4);
+  border-color: #e8c84a;
+  color: #ffffff;
+  transform: scale(0.92);
+}
+
+/* Positioning with Safe-Area Inset Support */
+#btn-left {
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left:   calc(24px + env(safe-area-inset-left));
+  width: 68px;
+  height: 68px;
+}
+
+#btn-right {
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left:   calc(108px + env(safe-area-inset-left));
+  width: 68px;
+  height: 68px;
+}
+
+#btn-jump {
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  right:  calc(24px + env(safe-area-inset-right));
+  width: 78px;
+  height: 78px;
+  font-size: 2rem;
+  background: rgba(46, 204, 113, 0.25);
+  border-color: rgba(46, 204, 113, 0.6);
+}
+
+#btn-jump:active {
+  background: rgba(46, 204, 113, 0.5);
+  border-color: #2ecc71;
+}
+
+#btn-pause {
+  top:   calc(16px + env(safe-area-inset-top));
+  right: calc(16px + env(safe-area-inset-right));
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Mobile Responsive UI Adaptations ────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .level-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .level-card {
+    min-height: 90px !important;
+    padding: 8px !important;
+  }
+
+  .ui-title {
+    font-size: 2.2rem !important;
+  }
+
+  .ui-btn {
+    min-height: 48px !important;
+    padding: 0.8rem 1.5rem !important;
+    font-size: 1.1rem !important;
+  }
+}
