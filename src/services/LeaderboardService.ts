@@ -13,6 +13,9 @@ export interface LeaderboardEntry {
   playerId: string;
   displayName: string;
   level: number;
+  highestLevelReached: number;
+  completedLevels: number;
+  status: 'ACTIVE' | 'DEAD' | 'COMPLETED' | 'VICTORY';
   timeMs: number;
   deaths: number;
   coins: number;
@@ -28,6 +31,9 @@ export interface RunStartResponse {
 export interface RunSubmitRequest {
   runId: string;
   level: number;
+  highestLevelReached?: number;
+  completedLevels?: number;
+  status?: 'DEAD' | 'COMPLETED' | 'VICTORY';
   timeMs: number;
   deaths: number;
   coins: number;
@@ -162,6 +168,10 @@ export class LeaderboardService {
     }
 
     try {
+      const highestLvl = req.highestLevelReached ?? req.level;
+      const compLvls = req.completedLevels ?? (req.status === 'COMPLETED' || req.status === 'VICTORY' ? req.level : Math.max(0, req.level - 1));
+      const finalStatus = req.status || 'COMPLETED';
+
       const response = await fetch(`${this._supabaseUrl}/functions/v1/run-complete`, {
         method: 'POST',
         headers: {
@@ -174,6 +184,9 @@ export class LeaderboardService {
           playerId,
           displayName,
           level: req.level,
+          highestLevelReached: highestLvl,
+          completedLevels: compLvls,
+          status: finalStatus,
           timeMs: req.timeMs,
           deaths: req.deaths,
           coins: req.coins,
@@ -256,9 +269,9 @@ export class LeaderboardService {
   /** PostgREST API Fallback for fetching leaderboards directly from Supabase tables */
   private async _getLeaderboardRestFallback(level: number, playerId: string): Promise<LeaderboardResponse> {
     try {
-      let restUrl = `${this._supabaseUrl}/rest/v1/runs?select=id,player_id,level,time_ms,deaths,coins,created_at,players(display_name)&status=eq.COMPLETED&order=time_ms.asc,deaths.asc&limit=100`;
+      let restUrl = `${this._supabaseUrl}/rest/v1/runs?select=id,player_id,level,highest_level_reached,completed_levels,status,time_ms,deaths,coins,created_at,players(display_name)&status=in.(COMPLETED,VICTORY,DEAD)&order=highest_level_reached.desc,time_ms.asc,deaths.asc,coins.desc,created_at.asc&limit=100`;
       if (level > 0 && level <= 10) {
-        restUrl += `&level=eq.${level}`;
+        restUrl += `&highest_level_reached=gte.${level}`;
       }
 
       const response = await fetch(restUrl, {
@@ -279,6 +292,9 @@ export class LeaderboardService {
         playerId: row.player_id,
         displayName: row.players?.display_name || 'Runner',
         level: row.level,
+        highestLevelReached: row.highest_level_reached ?? row.level ?? 1,
+        completedLevels: row.completed_levels ?? (row.status === 'COMPLETED' || row.status === 'VICTORY' ? row.level : Math.max(0, row.level - 1)),
+        status: row.status || 'COMPLETED',
         timeMs: row.time_ms,
         deaths: row.deaths,
         coins: row.coins,

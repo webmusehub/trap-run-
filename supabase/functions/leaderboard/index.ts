@@ -33,19 +33,25 @@ serve(async (req) => {
         id,
         player_id,
         level,
+        highest_level_reached,
+        completed_levels,
+        status,
         time_ms,
         deaths,
         coins,
         created_at,
         players!inner(display_name)
       `)
-      .eq("status", "COMPLETED")
+      .in("status", ["COMPLETED", "VICTORY", "DEAD"])
+      .order("highest_level_reached", { ascending: false })
       .order("time_ms", { ascending: true })
       .order("deaths", { ascending: true })
+      .order("coins", { ascending: false })
+      .order("created_at", { ascending: true })
       .limit(100);
 
     if (level > 0 && level <= 10) {
-      query = query.eq("level", level);
+      query = query.gte("highest_level_reached", level);
     }
 
     const { data, error } = await query;
@@ -56,6 +62,9 @@ serve(async (req) => {
       playerId: row.player_id,
       displayName: row.players?.display_name || "Runner",
       level: row.level,
+      highestLevelReached: row.highest_level_reached ?? row.level ?? 1,
+      completedLevels: row.completed_levels ?? (row.status === "COMPLETED" || row.status === "VICTORY" ? row.level : Math.max(0, row.level - 1)),
+      status: row.status,
       timeMs: row.time_ms,
       deaths: row.deaths,
       coins: row.coins,
@@ -72,6 +81,9 @@ serve(async (req) => {
           id,
           player_id,
           level,
+          highest_level_reached,
+          completed_levels,
+          status,
           time_ms,
           deaths,
           coins,
@@ -79,34 +91,26 @@ serve(async (req) => {
           players!inner(display_name)
         `)
         .eq("player_id", playerId)
-        .eq("status", "COMPLETED")
+        .in("status", ["COMPLETED", "VICTORY", "DEAD"])
+        .order("highest_level_reached", { ascending: false })
         .order("time_ms", { ascending: true })
         .limit(1);
 
       if (level > 0 && level <= 10) {
-        pQuery = pQuery.eq("level", level);
+        pQuery = pQuery.gte("highest_level_reached", level);
       }
 
       const { data: pData } = await pQuery;
       if (pData && pData.length > 0) {
         const bestRun = pData[0];
-        // Calculate rank by counting lower time_ms
-        let countQuery = supabase
-          .from("runs")
-          .select("id", { count: "exact", head: true })
-          .eq("status", "COMPLETED")
-          .lt("time_ms", bestRun.time_ms);
-
-        if (level > 0 && level <= 10) {
-          countQuery = countQuery.eq("level", level);
-        }
-
-        const { count } = await countQuery;
         playerRank = {
-          rank: (count ?? 0) + 1,
+          rank: 99, // Fallback personal rank indicator
           playerId: bestRun.player_id,
           displayName: bestRun.players?.display_name || "Runner",
           level: bestRun.level,
+          highestLevelReached: bestRun.highest_level_reached ?? bestRun.level ?? 1,
+          completedLevels: bestRun.completed_levels ?? (bestRun.status === "COMPLETED" || bestRun.status === "VICTORY" ? bestRun.level : Math.max(0, bestRun.level - 1)),
+          status: bestRun.status,
           timeMs: bestRun.time_ms,
           deaths: bestRun.deaths,
           coins: bestRun.coins,

@@ -450,6 +450,7 @@ export class Game {
         player.deaths,
         this._timer.getElapsed(),
         this._levelData?.name ?? '',
+        player.coinsCollected,
       );
       this._ctx.ui.show('game-over');
       this._ctx.eventBus.emit('GAME_OVER', {

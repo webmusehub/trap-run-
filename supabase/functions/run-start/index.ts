@@ -45,16 +45,18 @@ serve(async (req) => {
       console.error("Player upsert error:", playerError);
     }
 
-    // 2. Insert new run record with status 'STARTED'
+    // 2. Insert new run record with status 'ACTIVE'
     const { data: runData, error: runError } = await supabase
       .from("runs")
       .insert({
         player_id: playerId,
         level: levelId,
+        highest_level_reached: levelId,
+        completed_levels: Math.max(0, levelId - 1),
         time_ms: 9999999, // default placeholder
         deaths: 0,
         coins: 0,
-        status: "STARTED",
+        status: "ACTIVE",
         started_at: new Date().toISOString(),
       })
       .select("id")

@@ -36,33 +36,36 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const body = await req.json();
-    const { runId, playerId, displayName, level, timeMs, deaths, coins } = body;
+    const { runId, playerId, displayName, level, highestLevelReached, completedLevels, timeMs, deaths, coins, status } = body;
 
     const levelId = parseInt(level, 10);
+    const highestLvl = Math.min(10, Math.max(1, parseInt(highestLevelReached ?? levelId, 10)));
+    const compLvls = Math.min(10, Math.max(0, parseInt(completedLevels ?? (status === 'COMPLETED' || status === 'VICTORY' ? levelId : levelId - 1), 10)));
     const timeVal = parseInt(timeMs, 10);
     const deathVal = parseInt(deaths, 10);
     const coinVal = parseInt(coins, 10);
+    const finalStatus = (['DEAD', 'COMPLETED', 'VICTORY'].includes(status) ? status : 'COMPLETED');
 
     // 1. Parameter Validation
-    if (!runId || !playerId || !levelId || !LEVEL_LIMITS[levelId]) {
+    if (!runId || !playerId || !levelId || !LEVEL_LIMITS[highestLvl]) {
       return new Response(JSON.stringify({ success: false, reason: "Invalid level or missing parameter" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const limits = LEVEL_LIMITS[levelId];
+    const limits = LEVEL_LIMITS[highestLvl];
 
     // Anti-cheat limit checks
-    if (isNaN(timeVal) || timeVal < limits.minTimeMs) {
-      return new Response(JSON.stringify({ success: false, reason: `Physically impossible completion time for Level ${levelId}` }), {
+    if (isNaN(timeVal) || timeVal < 1000) {
+      return new Response(JSON.stringify({ success: false, reason: `Invalid completion time for Level ${highestLvl}` }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    if (isNaN(coinVal) || coinVal < 0 || coinVal > limits.maxCoins) {
-      return new Response(JSON.stringify({ success: false, reason: `Coin count exceeds max ${limits.maxCoins} for Level ${levelId}` }), {
+    if (isNaN(coinVal) || coinVal < 0) {
+      return new Response(JSON.stringify({ success: false, reason: `Invalid coin count` }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -96,21 +99,23 @@ serve(async (req) => {
       });
     }
 
-    if (run.status !== "STARTED") {
+    if (run.status !== "STARTED" && run.status !== "ACTIVE") {
       return new Response(JSON.stringify({ success: false, reason: `Run already processed (${run.status})` }), {
         status: 409,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // 3. Mark Run as COMPLETED
+    // 3. Mark Run as Finalized (COMPLETED, VICTORY, or DEAD)
     const { error: updateError } = await supabase
       .from("runs")
       .update({
+        highest_level_reached: highestLvl,
+        completed_levels: compLvls,
         time_ms: timeVal,
         deaths: deathVal,
         coins: coinVal,
-        status: "COMPLETED",
+        status: finalStatus,
         completed_at: new Date().toISOString(),
       })
       .eq("id", runId);

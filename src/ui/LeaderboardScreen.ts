@@ -5,7 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { GameContext } from '../game/GameContext.js';
-import { leaderboardService } from '../services/LeaderboardService.js';
+import { leaderboardService, type LeaderboardEntry } from '../services/LeaderboardService.js';
 import { playerProfileService } from '../services/PlayerProfileService.js';
 
 export class LeaderboardScreen {
@@ -111,12 +111,14 @@ export class LeaderboardScreen {
 
     let playerRankHtml = '';
     if (playerRank) {
+      const lvlBadge = this._renderLevelBadge(playerRank);
       playerRankHtml = `
         <div class="your-rank-card">
           <div class="your-rank-title">YOUR RANK</div>
           <div class="your-rank-details">
             <span class="rank-badge">#${playerRank.rank}</span>
             <span class="rank-name">${playerProfileService.sanitizeName(playerRank.displayName)}</span>
+            <span class="rank-level-badge">${lvlBadge}</span>
             <span class="rank-time">${this._formatTime(playerRank.timeMs / 1000)}</span>
             <span class="rank-stats">💀 ${playerRank.deaths} | 🪙 ${playerRank.coins}</span>
           </div>
@@ -137,10 +139,12 @@ export class LeaderboardScreen {
         const isCurrent = entry.playerId === currentPlayerId;
         const timeStr = this._formatTime(entry.timeMs / 1000);
         const nameSanitized = playerProfileService.sanitizeName(entry.displayName);
+        const lvlBadge = this._renderLevelBadge(entry);
         return `
           <tr class="${isCurrent ? 'highlight-player' : ''}">
             <td class="col-rank">#${entry.rank}</td>
             <td class="col-player">${nameSanitized}${isCurrent ? ' <span class="you-tag">(YOU)</span>' : ''}</td>
+            <td class="col-level">${lvlBadge}</td>
             <td class="col-time">${timeStr}</td>
             <td class="col-deaths">${entry.deaths}</td>
             <td class="col-coins">${entry.coins}</td>
@@ -157,6 +161,7 @@ export class LeaderboardScreen {
             <tr>
               <th class="col-rank">RANK</th>
               <th class="col-player">PLAYER</th>
+              <th class="col-level">LEVEL</th>
               <th class="col-time">TIME</th>
               <th class="col-deaths">DEATHS</th>
               <th class="col-coins">COINS</th>
@@ -168,6 +173,20 @@ export class LeaderboardScreen {
         </table>
       </div>
     `;
+  }
+
+  private _renderLevelBadge(entry: LeaderboardEntry): string {
+    const lvl = entry.highestLevelReached ?? entry.level ?? 1;
+    const isVictory = entry.status === 'VICTORY' || (lvl === 10 && (entry.completedLevels >= 10 || entry.status === 'COMPLETED'));
+    const isDead = entry.status === 'DEAD' || entry.completedLevels < lvl;
+
+    if (isVictory) {
+      return `L${lvl} 🏆`;
+    }
+    if (isDead) {
+      return `L${lvl} 💀`;
+    }
+    return `L${lvl} ✓`;
   }
 
   private _formatTime(sec: number): string {
