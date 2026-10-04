@@ -67,7 +67,9 @@ export class LeaderboardScreen {
 
     const btnBack = this._container.querySelector('#btn-leaderboard-back');
     btnBack?.addEventListener('click', () => {
-      this._ctx.stateMachine.transition('MAIN_MENU');
+      if (this._ctx.stateMachine.canTransition('MAIN_MENU')) {
+        this._ctx.stateMachine.transition('MAIN_MENU');
+      }
       this._ctx.ui.show('main-menu');
     });
 

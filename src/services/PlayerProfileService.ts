@@ -61,7 +61,32 @@ export class PlayerProfileService {
     const sanitized = this.sanitizeName(rawName);
     this._profile.displayName = sanitized;
     this._saveProfile();
+    this._syncProfileToSupabase();
     return { success: true };
+  }
+
+  private async _syncProfileToSupabase(): Promise<void> {
+    try {
+      const url = import.meta.env?.VITE_SUPABASE_URL;
+      const key = import.meta.env?.VITE_SUPABASE_ANON_KEY;
+      if (!url || !key || !this._profile.id || !this._profile.displayName) return;
+
+      await fetch(`${url}/functions/v1/run-start`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+          'apikey': key,
+        },
+        body: JSON.stringify({
+          playerId: this._profile.id,
+          displayName: this._profile.displayName,
+          level: 1,
+        }),
+      });
+    } catch (_) {
+      // Non-blocking sync error catch
+    }
   }
 
   /** Validate display name according to launch specification. */

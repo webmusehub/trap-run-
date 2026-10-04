@@ -54,7 +54,7 @@ serve(async (req) => {
     const topScores = (data || []).map((row: any, idx: number) => ({
       rank: idx + 1,
       playerId: row.player_id,
-      displayName: row.players?.display_name || "Anonymous",
+      displayName: row.players?.display_name || "Runner",
       level: row.level,
       timeMs: row.time_ms,
       deaths: row.deaths,
@@ -105,7 +105,7 @@ serve(async (req) => {
         playerRank = {
           rank: (count ?? 0) + 1,
           playerId: bestRun.player_id,
-          displayName: bestRun.players?.display_name || "Anonymous",
+          displayName: bestRun.players?.display_name || "Runner",
           level: bestRun.level,
           timeMs: bestRun.time_ms,
           deaths: bestRun.deaths,

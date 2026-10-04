@@ -117,6 +117,16 @@ serve(async (req) => {
 
     if (updateError) throw updateError;
 
+    // Upsert player profile display_name if provided and not Anonymous
+    if (typeof displayName === "string" && displayName.trim()) {
+      const cleanName = displayName.trim().slice(0, 16);
+      if (cleanName && cleanName.toLowerCase() !== "anonymous") {
+        await supabase
+          .from("players")
+          .upsert({ id: playerId, display_name: cleanName, updated_at: new Date().toISOString() });
+      }
+    }
+
     // 4. Calculate Rank for this level
     const { count: higherCount } = await supabase
       .from("runs")

@@ -114,7 +114,9 @@ export class Settings {
       if (this._previousScreen === 'pause') {
         this._ctx.ui.show('pause');
       } else {
-        this._ctx.stateMachine.transition('MAIN_MENU');
+        if (this._ctx.stateMachine.canTransition('MAIN_MENU')) {
+          this._ctx.stateMachine.transition('MAIN_MENU');
+        }
         this._ctx.ui.show('main-menu');
       }
     });

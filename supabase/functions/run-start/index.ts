@@ -32,7 +32,8 @@ serve(async (req) => {
       });
     }
 
-    const cleanName = (displayName || "Anonymous").trim().slice(0, 16);
+    const rawName = typeof displayName === "string" ? displayName.trim() : "";
+    const cleanName = (rawName && rawName.toLowerCase() !== "anonymous" ? rawName : `Runner_${Math.floor(1000 + Math.random() * 9000)}`).slice(0, 16);
     const levelId = parseInt(level, 10) || 1;
 
     // 1. Upsert player record
