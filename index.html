@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="description" content="A deadly 2D browser platformer where every step could be a trap. Can you beat all 10 levels and reach the global leaderboard? RUN. JUMP. TRUST NOTHING." />
+    <meta name="description" content="TRAP RUN — The 2D platform game where everything wants to kill you. 10 Levels. 100 Coins. Global Leaderboard. RUN. JUMP. TRUST NOTHING." />
     <meta name="keywords" content="Trap Run, 2D platformer, browser game, html5 game, speedrun, deadly traps, WebMuseHub" />
     <meta name="author" content="WebMuseHub" />
 
@@ -20,72 +20,317 @@
 
     <title>Trap Run — Run. Jump. Trust Nothing.</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
   </head>
   <body>
 
-    <!-- ── Portrait orientation warning (mobile) ─────────────────────────── -->
-    <div id="portrait-warning" aria-live="polite">
-      <h2>↻ ROTATE YOUR DEVICE</h2>
-      <p>TRAP RUN IS BEST PLAYED IN LANDSCAPE.</p>
-    </div>
+    <!-- ── Top Sticky Header Navigation ──────────────────────────────────── -->
+    <header class="landing-header">
+      <div class="nav-container">
+        <a href="#hero" class="nav-brand">
+          <span class="brand-icon">💀</span>
+          <span class="brand-name">TRAP RUN</span>
+        </a>
+        <nav class="nav-menu">
+          <a href="#how-to-play" class="nav-link">How to Play</a>
+          <a href="#why-trap-run" class="nav-link">Features</a>
+          <a href="#screenshots" class="nav-link">Gameplay</a>
+          <a href="#leaderboard-section" class="nav-link">Leaderboard</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+        </nav>
+        <button class="nav-cta-btn" onclick="scrollToGame()">PLAY NOW</button>
+      </div>
+    </header>
 
-    <!-- ── Main game container ───────────────────────────────────────────── -->
-    <div id="game-container">
+    <!-- ── Game Viewport Section ─────────────────────────────────────────── -->
+    <main id="game-section">
+      <!-- Portrait orientation warning (mobile) -->
+      <div id="portrait-warning" aria-live="polite">
+        <h2>↻ ROTATE YOUR DEVICE</h2>
+        <p>TRAP RUN IS BEST PLAYED IN LANDSCAPE.</p>
+      </div>
 
-      <!-- The HTML5 Canvas — game world renders here -->
-      <canvas id="game-canvas" role="img" aria-label="Trap Run game canvas"></canvas>
+      <!-- Main game container -->
+      <div id="game-container">
+        <!-- The HTML5 Canvas — game world renders here -->
+        <canvas id="game-canvas" role="img" aria-label="Trap Run game canvas"></canvas>
 
-      <!-- Touch controls overlay -->
-      <div id="touch-controls" aria-hidden="true">
-        <div id="touch-dpad">
-          <button class="touch-btn" id="btn-left"  aria-label="Move left">◀</button>
-          <button class="touch-btn" id="btn-right" aria-label="Move right">▶</button>
+        <!-- Touch controls overlay -->
+        <div id="touch-controls" aria-hidden="true">
+          <div id="touch-dpad">
+            <button class="touch-btn" id="btn-left"  aria-label="Move left">◀</button>
+            <button class="touch-btn" id="btn-right" aria-label="Move right">▶</button>
+          </div>
+          <button class="touch-btn" id="btn-jump"  aria-label="Jump">▲</button>
+          <button class="touch-btn" id="btn-pause" aria-label="Pause">❚❚</button>
         </div>
-        <button class="touch-btn" id="btn-jump"  aria-label="Jump">▲</button>
-        <button class="touch-btn" id="btn-pause" aria-label="Pause">❚❚</button>
-      </div>
 
-      <!-- ── HTML/CSS UI panels ─────────────────────────────────────────── -->
-      <div id="ui-name-prompt"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-main-menu"      class="ui-panel ui-hidden" role="main"></div>
-      <div id="ui-level-select"   class="ui-panel ui-hidden" role="main"></div>
-      <div id="ui-leaderboard"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-hud"            class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
-      <div id="ui-pause"          class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-game-over"      class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-level-complete" class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-victory"        class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-settings"       class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-      <div id="ui-loading"        class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+        <!-- ── HTML/CSS UI panels ───────────────────────────────────────── -->
+        <div id="ui-name-prompt"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-main-menu"      class="ui-panel ui-hidden" role="main"></div>
+        <div id="ui-level-select"   class="ui-panel ui-hidden" role="main"></div>
+        <div id="ui-leaderboard"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-hud"            class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+        <div id="ui-pause"          class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-game-over"      class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-level-complete" class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-victory"        class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-settings"       class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-loading"        class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
 
-      <!-- Dev overlay -->
-      <div id="dev-overlay" aria-hidden="true">
-        <div id="dev-fps">FPS: --</div>
-        <div id="dev-state">State: --</div>
+        <!-- Dev overlay -->
+        <div id="dev-overlay" aria-hidden="true">
+          <div id="dev-fps">FPS: --</div>
+          <div id="dev-state">State: --</div>
+        </div>
       </div>
+    </main>
+
+    <!-- ── Public Landing Page Sections ──────────────────────────────────── -->
+    <div id="landing-page">
+
+      <!-- Hero Section -->
+      <section id="hero" class="hero-section">
+        <div class="hero-content">
+          <span class="hero-badge">⚡ THE ULTIMATE 2D PLATFORMER</span>
+          <h1 class="hero-title">TRAP RUN</h1>
+          <p class="hero-tagline">The platform game where everything wants to kill you.</p>
+
+          <div class="hero-actions">
+            <button class="cta-primary-btn" onclick="scrollToGame()">
+              <span>🎮 PLAY NOW</span>
+            </button>
+          </div>
+
+          <div class="hero-stats-grid">
+            <div class="stat-card">
+              <span class="stat-num">10</span>
+              <span class="stat-label">Levels</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num">100</span>
+              <span class="stat-label">Coins</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num">🏆</span>
+              <span class="stat-label">Global Leaderboard</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num">📱💻</span>
+              <span class="stat-label">Desktop + Mobile</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How to Play Section -->
+      <section id="how-to-play" class="landing-section">
+        <div class="section-header">
+          <h2 class="section-title">HOW TO PLAY</h2>
+          <p class="section-desc">Master the controls, anticipate deception, and stay alive.</p>
+        </div>
+
+        <div class="how-to-play-grid">
+          <div class="htp-card">
+            <div class="htp-icon">🏃</div>
+            <h3>Move</h3>
+            <p>Use <kbd>A</kbd> / <kbd>D</kbd> or <kbd>◀</kbd> <kbd>▶</kbd> to run across platforms.</p>
+          </div>
+          <div class="htp-card">
+            <div class="htp-icon">🦘</div>
+            <h3>Jump</h3>
+            <p>Press <kbd>Space</kbd>, <kbd>W</kbd>, or <kbd>▲</kbd> to leap over deadly chasms.</p>
+          </div>
+          <div class="htp-card">
+            <div class="htp-icon">💀</div>
+            <h3>Avoid Traps</h3>
+            <p>Hidden spikes, fake floors, and falling ceilings await every misstep.</p>
+          </div>
+          <div class="htp-card">
+            <div class="htp-icon">🪙</div>
+            <h3>Collect Coins</h3>
+            <p>Gather 100 shiny gold coins hidden across all 10 deadly levels.</p>
+          </div>
+          <div class="htp-card">
+            <div class="htp-icon">🚪</div>
+            <h3>Reach the Exit</h3>
+            <p>Find the true exit portal to complete each speedrun attempt.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Trap Run? Section -->
+      <section id="why-trap-run" class="landing-section dark-alt">
+        <div class="section-header">
+          <h2 class="section-title">WHY TRAP RUN?</h2>
+          <p class="section-desc">Built for speedrunners, platformer lovers, and thrill seekers.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-badge">01</div>
+            <h3>10 Handcrafted Levels</h3>
+            <p>Each level introduces unique trap mechanics and escalating precision challenges.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-badge">02</div>
+            <h3>Hidden Traps</h3>
+            <p>Trigger-based spikes, crumbling blocks, and stealth obstacles test your memory.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-badge">03</div>
+            <h3>Moving Platforms</h3>
+            <p>Dynamic physics platforms require perfect timing and momentum control.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-badge">04</div>
+            <h3>Fake Exits</h3>
+            <p>Trust nothing! Some exit portals trigger deadly traps when approached.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-badge">05</div>
+            <h3>Global Leaderboard</h3>
+            <p>Compete worldwide for the fastest speedrun times and fewest deaths.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screenshots / Gameplay Section -->
+      <section id="screenshots" class="landing-section">
+        <div class="section-header">
+          <h2 class="section-title">SCREENSHOTS / GAMEPLAY</h2>
+          <p class="section-desc">Experience high-stakes 2D platforming action in real time.</p>
+        </div>
+
+        <div class="screenshots-grid">
+          <div class="screenshot-card">
+            <img src="/assets/images/screenshot1.png" alt="Trap Run gameplay level screenshot" loading="lazy" />
+            <div class="screenshot-overlay">
+              <span class="screenshot-tag">LEVEL PREVIEW</span>
+              <h4>Precision Jumping & Trap Evasion</h4>
+            </div>
+          </div>
+          <div class="screenshot-card">
+            <img src="/assets/images/screenshot2.png" alt="Trap Run speedrun action screenshot" loading="lazy" />
+            <div class="screenshot-overlay">
+              <span class="screenshot-tag">SPEEDRUN GAUNTLET</span>
+              <h4>Moving Platforms & Hidden Spikes</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Global Leaderboard Section -->
+      <section id="leaderboard-section" class="landing-section dark-alt">
+        <div class="section-header">
+          <h2 class="section-title">GLOBAL LEADERBOARD</h2>
+          <p class="section-desc">Live rankings powered by Supabase backend.</p>
+        </div>
+
+        <div class="leaderboard-preview-container">
+          <div class="leaderboard-preview-card">
+            <div class="preview-header">
+              <span class="preview-title">TOP RUNNERS — LIVE WORLD RANKINGS</span>
+              <button class="preview-refresh-btn" onclick="scrollToGame()">ENTER GAME RANKINGS</button>
+            </div>
+            <div class="preview-body">
+              <p class="preview-text">Launch the game above to view global speedrun rankings, level filters (L1–L10), and claim your position on the leaderboard!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section id="faq" class="landing-section">
+        <div class="section-header">
+          <h2 class="section-title">FREQUENTLY ASKED QUESTIONS</h2>
+          <p class="section-desc">Everything you need to know about Trap Run.</p>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary class="faq-question">What is Trap Run?</summary>
+            <div class="faq-answer">
+              Trap Run is a fast-paced 2D browser platformer where levels are filled with hidden traps, fake exits, moving platforms, and coins. Your goal is to navigate all 10 handcrafted levels in record time with as few deaths as possible.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Is Trap Run free?</summary>
+            <div class="faq-answer">
+              Yes, Trap Run is 100% free to play directly in your web browser with no downloads or installs required.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Can I play on mobile?</summary>
+            <div class="faq-answer">
+              Absolutely! Trap Run features built-in responsive touch controls for mobile smartphones and tablets. It plays best in landscape mode.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How many levels are there?</summary>
+            <div class="faq-answer">
+              There are 10 handcrafted levels featuring unique trap mechanics, 100 total collectible coins, and progressive speedrun difficulty.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How do I get on the leaderboard?</summary>
+            <div class="faq-answer">
+              Simply enter a runner display name when starting the game, complete any level, and your verified speedrun completion time will automatically submit to the live global leaderboard!
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Bottom CTA Banner Section -->
+      <section class="final-cta-section">
+        <div class="cta-banner-card">
+          <h2 class="cta-banner-title">READY TO TRUST NOTHING?</h2>
+          <p class="cta-banner-desc">Step into the deadly gauntlet and claim your spot on the world leaderboard.</p>
+          <button class="cta-primary-btn lg-btn" onclick="scrollToGame()">
+            <span>🚀 PLAY TRAP RUN NOW</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="public-landing-footer">
+        <div class="footer-content">
+          <span class="brand">TRAP RUN &copy; WebMuseHub</span>
+          <span class="footer-links">
+            <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+            <span class="sep">•</span>
+            <a href="/terms.html" target="_blank" rel="noopener">Terms of Service</a>
+          </span>
+        </div>
+      </footer>
 
     </div>
 
-    <!-- ── Public Landing Footer ────────────────────────────────────────── -->
-    <footer class="public-landing-footer">
-      <div class="footer-content">
-        <span class="brand">TRAP RUN &copy; WebMuseHub</span>
-        <span class="footer-links">
-          <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
-          <span class="sep">•</span>
-          <a href="/terms.html" target="_blank" rel="noopener">Terms of Service</a>
-        </span>
-      </div>
-    </footer>
-
-    <!-- ── Error screen ──────────────────────────────────────────────────── -->
+    <!-- Error screen -->
     <div id="error-screen" role="alert">
       <h1>Something went wrong</h1>
       <p>Trap Run encountered an error during initialization.</p>
       <pre id="error-message"></pre>
       <button id="reload-btn" onclick="location.reload()">Reload</button>
     </div>
+
+    <script>
+      function scrollToGame() {
+        const el = document.getElementById('game-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    </script>
 
     <!-- App entry point -->
     <script type="module" src="/src/main.ts"></script>
