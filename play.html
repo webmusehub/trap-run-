@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="Play Trap Run — Full-screen 2D platformer game. 10 Levels. 100 Coins. Global Leaderboard. RUN. JUMP. TRUST NOTHING." />
+    <title>Play Trap Run — Dedicated Game Window</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+  </head>
+  <body class="play-page-body">
+
+    <!-- Top Play Header Bar -->
+    <header class="play-header">
+      <a href="/index.html" class="play-back-btn" title="Return to Landing Page">
+        <span class="arrow">←</span>
+        <span>LANDING PAGE</span>
+      </a>
+      <div class="play-brand">
+        <span class="icon">💀</span>
+        <span class="text">TRAP RUN</span>
+      </div>
+      <div class="play-hint">
+        <span>RUN. JUMP. TRUST NOTHING.</span>
+      </div>
+    </header>
+
+    <!-- Dedicated Fullscreen Game Viewport -->
+    <main id="play-game-viewport">
+
+      <!-- Portrait orientation warning (mobile) -->
+      <div id="portrait-warning" aria-live="polite">
+        <h2>↻ ROTATE YOUR DEVICE</h2>
+        <p>TRAP RUN IS BEST PLAYED IN LANDSCAPE.</p>
+      </div>
+
+      <!-- Main game container -->
+      <div id="game-container">
+        <!-- The HTML5 Canvas — game world renders here -->
+        <canvas id="game-canvas" role="img" aria-label="Trap Run game canvas"></canvas>
+
+        <!-- Touch controls overlay -->
+        <div id="touch-controls" aria-hidden="true">
+          <div id="touch-dpad">
+            <button class="touch-btn" id="btn-left"  aria-label="Move left">◀</button>
+            <button class="touch-btn" id="btn-right" aria-label="Move right">▶</button>
+          </div>
+          <button class="touch-btn" id="btn-jump"  aria-label="Jump">▲</button>
+          <button class="touch-btn" id="btn-pause" aria-label="Pause">❚❚</button>
+        </div>
+
+        <!-- ── HTML/CSS UI panels ───────────────────────────────────────── -->
+        <div id="ui-name-prompt"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-main-menu"      class="ui-panel ui-hidden" role="main"></div>
+        <div id="ui-level-select"   class="ui-panel ui-hidden" role="main"></div>
+        <div id="ui-leaderboard"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-hud"            class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+        <div id="ui-pause"          class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-game-over"      class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-level-complete" class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-victory"        class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-settings"       class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
+        <div id="ui-loading"        class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
+
+        <!-- Dev overlay -->
+        <div id="dev-overlay" aria-hidden="true">
+          <div id="dev-fps">FPS: --</div>
+          <div id="dev-state">State: --</div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Error screen -->
+    <div id="error-screen" role="alert">
+      <h1>Something went wrong</h1>
+      <p>Trap Run encountered an error during initialization.</p>
+      <pre id="error-message"></pre>
+      <button id="reload-btn" onclick="location.reload()">Reload</button>
+    </div>
+
+    <!-- App entry point -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

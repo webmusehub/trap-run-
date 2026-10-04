@@ -43,53 +43,9 @@
           <a href="#leaderboard-section" class="nav-link">Leaderboard</a>
           <a href="#faq" class="nav-link">FAQ</a>
         </nav>
-        <button class="nav-cta-btn" onclick="scrollToGame()">PLAY NOW</button>
+        <a href="/play.html" target="_blank" rel="noopener" class="nav-cta-btn">PLAY NOW</a>
       </div>
     </header>
-
-    <!-- ── Game Viewport Section ─────────────────────────────────────────── -->
-    <main id="game-section">
-      <!-- Portrait orientation warning (mobile) -->
-      <div id="portrait-warning" aria-live="polite">
-        <h2>↻ ROTATE YOUR DEVICE</h2>
-        <p>TRAP RUN IS BEST PLAYED IN LANDSCAPE.</p>
-      </div>
-
-      <!-- Main game container -->
-      <div id="game-container">
-        <!-- The HTML5 Canvas — game world renders here -->
-        <canvas id="game-canvas" role="img" aria-label="Trap Run game canvas"></canvas>
-
-        <!-- Touch controls overlay -->
-        <div id="touch-controls" aria-hidden="true">
-          <div id="touch-dpad">
-            <button class="touch-btn" id="btn-left"  aria-label="Move left">◀</button>
-            <button class="touch-btn" id="btn-right" aria-label="Move right">▶</button>
-          </div>
-          <button class="touch-btn" id="btn-jump"  aria-label="Jump">▲</button>
-          <button class="touch-btn" id="btn-pause" aria-label="Pause">❚❚</button>
-        </div>
-
-        <!-- ── HTML/CSS UI panels ───────────────────────────────────────── -->
-        <div id="ui-name-prompt"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-main-menu"      class="ui-panel ui-hidden" role="main"></div>
-        <div id="ui-level-select"   class="ui-panel ui-hidden" role="main"></div>
-        <div id="ui-leaderboard"    class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-hud"            class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
-        <div id="ui-pause"          class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-game-over"      class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-level-complete" class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-victory"        class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-settings"       class="ui-panel ui-hidden" role="dialog" aria-modal="true"></div>
-        <div id="ui-loading"        class="ui-panel ui-hidden" role="status" aria-live="polite"></div>
-
-        <!-- Dev overlay -->
-        <div id="dev-overlay" aria-hidden="true">
-          <div id="dev-fps">FPS: --</div>
-          <div id="dev-state">State: --</div>
-        </div>
-      </div>
-    </main>
 
     <!-- ── Public Landing Page Sections ──────────────────────────────────── -->
     <div id="landing-page">
@@ -102,9 +58,9 @@
           <p class="hero-tagline">The platform game where everything wants to kill you.</p>
 
           <div class="hero-actions">
-            <button class="cta-primary-btn" onclick="scrollToGame()">
-              <span>🎮 PLAY NOW</span>
-            </button>
+            <a href="/play.html" target="_blank" rel="noopener" class="cta-primary-btn">
+              <span>🎮 PLAY NOW (NEW WINDOW)</span>
+            </a>
           </div>
 
           <div class="hero-stats-grid">
@@ -236,10 +192,10 @@
           <div class="leaderboard-preview-card">
             <div class="preview-header">
               <span class="preview-title">TOP RUNNERS — LIVE WORLD RANKINGS</span>
-              <button class="preview-refresh-btn" onclick="scrollToGame()">ENTER GAME RANKINGS</button>
+              <a href="/play.html" target="_blank" rel="noopener" class="preview-refresh-btn">ENTER GAME RANKINGS</a>
             </div>
             <div class="preview-body">
-              <p class="preview-text">Launch the game above to view global speedrun rankings, level filters (L1–L10), and claim your position on the leaderboard!</p>
+              <p class="preview-text">Launch the dedicated game window to view global speedrun rankings, level filters (L1–L10), and claim your position on the leaderboard!</p>
             </div>
           </div>
         </div>
@@ -295,9 +251,9 @@
         <div class="cta-banner-card">
           <h2 class="cta-banner-title">READY TO TRUST NOTHING?</h2>
           <p class="cta-banner-desc">Step into the deadly gauntlet and claim your spot on the world leaderboard.</p>
-          <button class="cta-primary-btn lg-btn" onclick="scrollToGame()">
+          <a href="/play.html" target="_blank" rel="noopener" class="cta-primary-btn lg-btn">
             <span>🚀 PLAY TRAP RUN NOW</span>
-          </button>
+          </a>
         </div>
       </section>
 
@@ -323,16 +279,5 @@
       <button id="reload-btn" onclick="location.reload()">Reload</button>
     </div>
 
-    <script>
-      function scrollToGame() {
-        const el = document.getElementById('game-section');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }
-    </script>
-
-    <!-- App entry point -->
-    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

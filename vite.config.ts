@@ -10,6 +10,12 @@ export default defineConfig({
     emptyOutDir: true,
     target: 'es2020',
     sourcemap: true,
+    rollupOptions: {
+      input: {
+        main: './index.html',
+        play: './play.html',
+      },
+    },
   },
 
   server: {
